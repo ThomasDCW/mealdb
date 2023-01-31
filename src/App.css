@@ -1,10 +1,11 @@
 * {
   box-sizing: border-box;
 }
-.header {
-  width: 100vw;
-  border: 1px solid white;
-}
+
 h1 {
   padding: 10px;
+  text-align: center;
+}
+.meal-picture {
+  width: 200px;
 }
