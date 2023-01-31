@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { Routes, Route, useParams, NavLink } from 'react-router-dom';
 import './App.css';
+import Meal from './Meal';
 
 function App() {
   const [meals, setMeals] = useState([]);
@@ -26,16 +28,30 @@ function App() {
       <header className='header'>
         <h1>MEAL DB</h1>
       </header>
-      <div>
-        {mealsArray?.map((meal, index) => {
-          return (
-            <div key={index}>
-              <p>{meal.strMeal}</p>
-              <img src={meal.strMealThumb} alt='' className='meal-picture' />
-            </div>
-          );
-        })}
-      </div>
+      <Routes>
+        <Route
+          path=''
+          element={
+            mealsArray
+              ? mealsArray.map((meal, index) => {
+                  return (
+                    <div key={index}>
+                      <NavLink to={meal.idMeal}>
+                        <p>{meal.strMeal}</p>
+                      </NavLink>
+                      <img
+                        src={meal.strMealThumb}
+                        alt=''
+                        className='meal-picture'
+                      />
+                    </div>
+                  );
+                })
+              : 'Chargement...'
+          }
+        />
+        <Route path=':idMeal' element={<Meal />} />
+      </Routes>
     </div>
   );
 }
