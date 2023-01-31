@@ -4,6 +4,7 @@ import axios from 'axios';
 
 export default function AllMeals() {
   const [meals, setMeals] = useState([]);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,19 +22,39 @@ export default function AllMeals() {
 
   let mealsArray = meals.meals;
 
+  const handleSearch = (e) => {
+    const label = e.target.value;
+    setSearch(label);
+  };
+
   return (
     <div>
+      <div>
+        <input
+          type='search'
+          placeholder='Search a meal'
+          onChange={handleSearch}
+        />
+      </div>
       {mealsArray
-        ? mealsArray.map((meal, index) => {
-            return (
-              <div key={index}>
-                <NavLink to={meal.idMeal}>
-                  <p>{meal.strMeal}</p>
-                </NavLink>
-                <img src={meal.strMealThumb} alt='' className='meal-picture' />
-              </div>
-            );
-          })
+        ? mealsArray
+            .filter((meal) => {
+              return meal.strMeal.toLowerCase().includes(search);
+            })
+            .map((meal, index) => {
+              return (
+                <div key={index}>
+                  <NavLink to={meal.idMeal}>
+                    <p>{meal.strMeal}</p>
+                  </NavLink>
+                  <img
+                    src={meal.strMealThumb}
+                    alt=''
+                    className='meal-picture'
+                  />
+                </div>
+              );
+            })
         : 'Chargement...'}
     </div>
   );
