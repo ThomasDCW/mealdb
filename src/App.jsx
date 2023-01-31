@@ -6,16 +6,20 @@ function App() {
   const [meals, setMeals] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`https://www.themealdb.com/api/json/v1/1/search.php?s=`)
-      .then(({ data }) => {
-        setMeals(data);
-      });
-  }, [console.log('fetch')]);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://www.themealdb.com/api/json/v1/1/search.php?s=`
+        );
+        setMeals(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   let mealsArray = meals.meals;
-
-  console.table(mealsArray);
 
   return (
     <div className='App'>
@@ -23,9 +27,9 @@ function App() {
         <h1>MEAL DB</h1>
       </header>
       <div>
-        {mealsArray.map((meal) => {
+        {mealsArray?.map((meal, index) => {
           return (
-            <div>
+            <div key={index}>
               <p>{meal.strMeal}</p>
               <img src={meal.strMealThumb} alt='' className='meal-picture' />
             </div>
